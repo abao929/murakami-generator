@@ -3,6 +3,7 @@ declare global {
   interface Position {
     x: number
     y: number
+    z: number
   }
 
   interface FlowerColors {
@@ -18,11 +19,23 @@ declare global {
     petal9: string
     petal10: string
     petal11: string
-    oddPetals: string
-    evenPetals: string
     leftEye: string
     rightEye: string
     face: string
     mouth: string
+  }
+
+  interface FlowerProps {
+    hidden: boolean
+    randomness?: number
+    colors?: FlowerColors
+    scale?: number
+    rotate?: number
+    placement?: Position
+  }
+
+  interface Size {
+    width: number
+    height: number
   }
 }
