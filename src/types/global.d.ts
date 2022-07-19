@@ -3,7 +3,7 @@ declare global {
   interface Position {
     x: number
     y: number
-    z: number
+    z?: number
   }
 
   interface FlowerColors {
@@ -27,8 +27,8 @@ declare global {
 
   interface FlowerProps {
     hidden: boolean
+    colors: FlowerColors
     randomness?: number
-    colors?: FlowerColors
     scale?: number
     rotate?: number
     placement?: Position
