@@ -11,31 +11,46 @@ const randFromDistribution = (tensDistribution: number[]) => {
 }
 
 const randHSL = (randomness?: number) => {
-  let lightnessDistribution: number[] = []
-  let saturationDistribution: number[] = []
-  switch (randomness) {
-    case 1:
-      lightnessDistribution = [4, 4, 5, 5, 5, 5, 5, 5, 6, 6]
-      saturationDistribution = [4, 5, 6, 7, 8, 9, 9, 9, 9, 9]
-      break
-    case 2:
-      lightnessDistribution = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-      saturationDistribution = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-      break
-    default:
-      lightnessDistribution = [4, 4, 5, 5, 5, 5, 5, 5, 6, 6]
-      saturationDistribution = [4, 5, 6, 7, 8, 9, 9, 9, 9, 9]
-  }
   const h: number = randHue()
-  const s: number = randFromDistribution(saturationDistribution)
-  const l: number = randFromDistribution(lightnessDistribution)
+  const s: number = randSaturation(randomness ?? 1)
+  const l: number = randLightness(randomness ?? 1)
   return `hsl(${h}, ${s}%, ${l}%)`
 }
 
-const randPosition = (canvasSize: Size): Position => {
+const randSaturation = (randomness: number): number => {
+  let saturationDistribution: number[] = []
+  switch (randomness) {
+    case 1:
+      saturationDistribution = [4, 5, 6, 7, 8, 9, 9, 9, 9, 9]
+      break
+    case 2:
+      saturationDistribution = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+      break
+    default:
+      saturationDistribution = [4, 5, 6, 7, 8, 9, 9, 9, 9, 9]
+  }
+  return randFromDistribution(saturationDistribution)
+}
+
+const randLightness = (randomness: number): number => {
+  let lightnessDistribution: number[] = []
+  switch (randomness) {
+    case 1:
+      lightnessDistribution = [4, 4, 5, 5, 5, 5, 5, 5, 6, 6]
+      break
+    case 2:
+      lightnessDistribution = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+      break
+    default:
+      lightnessDistribution = [4, 4, 5, 5, 5, 5, 5, 5, 6, 6]
+  }
+  return randFromDistribution(lightnessDistribution)
+}
+
+const randPosition = (canvasSize: Size, scale: number): Position => {
   let position: Position = {
-    x: Math.floor(Math.random() * canvasSize.width) - 50,
-    y: Math.floor(Math.random() * canvasSize.height) - 50,
+    x: Math.floor(Math.random() * canvasSize.width) - 50 * scale,
+    y: Math.floor(Math.random() * canvasSize.height) - 50 * scale,
     z: 1,
   }
   return position
@@ -49,4 +64,12 @@ const randScale = (min: number, max: number): number => {
   return min + Math.random() * (max - min)
 }
 
-export { randHSL, randHue, randPosition, randScale, randRotation }
+export {
+  randHSL,
+  randHue,
+  randSaturation,
+  randLightness,
+  randPosition,
+  randScale,
+  randRotation,
+}
