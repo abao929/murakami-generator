@@ -39,10 +39,17 @@ const Canvas = styled.div<Size>`
   position: relative;
 `
 
-const defaultFlowerProps: FlowerProps = {
-  hidden: true,
+const flowerPropsValues: FlowerProps[] = [...Array(100)].map(
+  (): FlowerProps => {
+    return { hidden: true }
+  }
+)
+flowerPropsValues[0].hidden = false
+
+const updateFlowerProp = (idx: number, key: keyof FlowerProps, value: any) => {
+  let prop = flowerPropsValues[idx]
+  flowerPropsValues[idx] = { ...prop, [key]: value }
 }
-const flowerPropsValues: FlowerProps[] = Array(100).fill(defaultFlowerProps)
 
 export default function Body() {
   // I COULD HAVE AN ARRAY WITH 100 FLOWERS AND THEN JUST OPTIONALLY RENDER THEM
@@ -66,6 +73,7 @@ export default function Body() {
   }
   const [numFlowers, setNumFlowers] = useState(1)
   const [randomness, setRandomness] = useState(0)
+  const [render, setRender] = useState(true)
   const MIN_RANDOMNESS = 0
   const MAX_RANDOMNESS = 2
   const MIN_FLOWERS = 1
@@ -74,6 +82,9 @@ export default function Body() {
     width: 900,
     height: 600,
   })
+  const rerender = () => {
+    setRender(!render)
+  }
 
   const randomizeAll = () => {
     setNumFlowers(Math.floor(Math.random() * MAX_FLOWERS - MIN_FLOWERS + 1))
@@ -91,11 +102,20 @@ export default function Body() {
     }
   }
   useEffect(() => {
-    for (let i = 0; i < flowerPropsValues.length; i++) {
-      flowerPropsValues[i].hidden = i >= numFlowers
-      console.log('im gonna cry', i, i > numFlowers)
+    let num = Number.isNaN(numFlowers) ? 1 : numFlowers
+    for (let i = 0; i < num; i++) {
+      flowerPropsValues[i].hidden = false
+      flowerPropsValues[i].placement =
+        flowerPropsValues[i].placement ?? randPosition(canvasSize)
+      flowerPropsValues[i].rotate =
+        flowerPropsValues[i].rotate ?? randRotation()
+      flowerPropsValues[i].scale =
+        flowerPropsValues[i].scale ?? randScale(0.4, 2)
     }
-    console.log('why does this not work', numFlowers, flowerPropsValues)
+    for (let i = num; i < flowerPropsValues.length; i++) {
+      flowerPropsValues[i].hidden = true
+    }
+    rerender()
   }, [numFlowers])
   // const flowers: JSX.Element[] = []
   // for (let i = 0; i < numFlowers; i++) {
@@ -116,6 +136,7 @@ export default function Body() {
   //   flowers.push(<Flower {...props} />)
   // }
   // console.log(flowers)
+  updateFlowerProp(0, 'scale', 10)
 
   return (
     <Container>
