@@ -1,20 +1,23 @@
 import { useState } from "react"
 import { SketchPicker } from "react-color"
+import { flowerPropsValues, defaultColors } from "./FlowerProps"
 
 interface Props {
   propIdx: number
-  colors: FlowerColors
   colorKey: keyof FlowerColors
 }
 
-export default function ColorPicker({ propIdx, colors, colorKey }: Props) {
-  const [color, setColor] = useState(colors[colorKey])
+export default function ColorPicker({ propIdx, colorKey }: Props) {
+  const [color, setColor] = useState(defaultColors[colorKey])
+  flowerPropsValues[propIdx].colors = flowerPropsValues[propIdx].colors ?? {
+    ...defaultColors,
+  }
   const handleChange = (e: any) => {
     setColor(e.hex)
-    console.log("before", colors)
-    colors[colorKey] = color
-    console.log("after", colors)
+    // @ts-ignore
+    flowerPropsValues[propIdx].colors[colorKey] = color
   }
+
   return (
     <SketchPicker color={color} onChangeComplete={(e) => handleChange(e)} />
   )

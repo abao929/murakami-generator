@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useEffect, useRef, useState, createContext } from "react"
+import { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import Dropdown from "./Dropdown"
 import Flower from "./Flower"
@@ -17,6 +17,7 @@ import {
 } from "./Randomize"
 import FlowerColorPicker from "./FlowerColorPicker"
 import ColorPicker from "./ColorPicker"
+import { flowerPropsValues, defaultColors } from "./FlowerProps"
 
 const Container = styled.div`
   display: grid;
@@ -50,13 +51,6 @@ const Canvas = styled.div<Size>`
   position: relative;
 `
 
-const flowerPropsValues: FlowerProps[] = createContext(
-  [...Array(100)].map((_, idx): FlowerProps => {
-    return { idx: idx, hidden: true }
-  })
-)
-flowerPropsValues[0].hidden = false
-
 const updateFlowerProp = (idx: number, key: keyof FlowerProps, value: any) => {
   let prop = flowerPropsValues[idx]
   flowerPropsValues[idx] = { ...prop, [key]: value }
@@ -64,24 +58,6 @@ const updateFlowerProp = (idx: number, key: keyof FlowerProps, value: any) => {
 
 export default function Body() {
   // I COULD HAVE AN ARRAY WITH 100 FLOWERS AND THEN JUST OPTIONALLY RENDER THEM
-  const defaultColors: FlowerColors = {
-    petal0: "#EE32A2",
-    petal1: "#F0413A",
-    petal2: "#F57E31",
-    petal3: "#FAB835",
-    petal4: "#F6F238",
-    petal5: "#98D54B",
-    petal6: "#38B561",
-    petal7: "#41BBAA",
-    petal8: "#57BBEC",
-    petal9: "#3F84CC",
-    petal10: "#4D45A4",
-    petal11: "#9F3EA4",
-    leftEye: "black",
-    rightEye: "black",
-    face: "#F5F015",
-    mouth: "#ED1D25",
-  }
   const [numFlowers, setNumFlowers] = useState(1)
   const [randomness, setRandomness] = useState(0)
   const [render, setRender] = useState(true)
@@ -177,25 +153,6 @@ export default function Body() {
     console.log(flowerPropsValues)
     rerender()
   }, [canvasSize, numFlowers])
-  // const flowers: JSX.Element[] = []
-  // for (let i = 0; i < numFlowers; i++) {
-  //   let props = flowerPropsValues[i]
-  //   props.placement = randPosition({ ...canvasSize })
-  //   if (randomness !== 0) {
-  //     let flowerColors = props.colors ?? defaultColors
-  //     for (let key in flowerColors) {
-  //       flowerColors[key as keyof FlowerColors] = randHSL(randomness)
-  //     }
-  //     console.log('placement is: ', props.placement)
-  //     if (randomness === 1) flowerColors.face = '#fff'
-  //   }
-  //   props.hidden = false
-  //   props.randomness = randomness
-  //   props.scale = randScale(0.4, 2.3)
-  //   props.rotate = randRotation()
-  //   flowers.push(<Flower {...props} />)
-  // }
-  // console.log(flowers)
 
   return (
     <Container>
@@ -207,14 +164,14 @@ export default function Body() {
           value={numFlowers}
           setValue={setNumFlowers}
           showInput={true}
-        ></Slider>
+        />
         <Slider
           min={MIN_RANDOMNESS}
           max={MAX_RANDOMNESS}
           label={"Randomness"}
           value={randomness}
           setValue={setRandomness}
-        ></Slider>
+        />
         <button onClick={() => randomizeAll()}>Randomize All</button>
         <button onClick={() => randomizeAllPositions()}>
           Randomize Positions
@@ -226,19 +183,11 @@ export default function Body() {
           selectItem={function (arg0: any): void {
             throw new Error("Function not implemented.")
           }}
-        >
-          what's oging on there
-        </Dropdown>
+        />
         <button onClick={() => saveImage()}>Download as PNG</button>
         {flowerPropsValues[0].colors && (
-          <ColorPicker
-            propIdx={0}
-            colors={flowerPropsValues[0].colors}
-            colorKey={"mouth"}
-          />
+          <ColorPicker propIdx={0} colorKey={"mouth"} />
         )}
-        {/* <FlowerColorPicker colors={flowerPropsValues[0].colors} /> */}
-        {flowerPropsValues[0].colors?.mouth}
       </Menu>
       <CanvasContainer>
         <Canvas id="canvas" width={900} height={600}>

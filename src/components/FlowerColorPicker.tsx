@@ -15,7 +15,6 @@ export default function FlowerColorPicker({ colors }: Props) {
   //   }
   //   return key.charAt(0).toUpperCase() + key.slice(1)
   // }
-
   // let objects = []
   // for (let key in colors) {
   //   let value = colors[key as keyof FlowerColors]
@@ -29,7 +28,6 @@ export default function FlowerColorPicker({ colors }: Props) {
   //     </div>
   //   )
   // }
-
   // return <div>{objects.map((o, i) => o)}</div>
-  return <ColorPicker propIdx={0} colors={colors} colorKey={"mouth"} />
+  // return <ColorPicker propIdx={0} colors={colors} colorKey={"mouth"} />
 }
