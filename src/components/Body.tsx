@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, createContext } from "react"
 import styled from "styled-components"
 import Dropdown from "./Dropdown"
 import Flower from "./Flower"
@@ -15,6 +15,8 @@ import {
   randSaturation,
   randLightness,
 } from "./Randomize"
+import FlowerColorPicker from "./FlowerColorPicker"
+import ColorPicker from "./ColorPicker"
 
 const Container = styled.div`
   display: grid;
@@ -48,10 +50,10 @@ const Canvas = styled.div<Size>`
   position: relative;
 `
 
-const flowerPropsValues: FlowerProps[] = [...Array(100)].map(
-  (_, idx): FlowerProps => {
+const flowerPropsValues: FlowerProps[] = createContext(
+  [...Array(100)].map((_, idx): FlowerProps => {
     return { idx: idx, hidden: true }
-  }
+  })
 )
 flowerPropsValues[0].hidden = false
 
@@ -221,12 +223,22 @@ export default function Body() {
           defaultItem={"hey lol"}
           currentItem={"hey lol"}
           labelField={"constructor"}
-          items={[]}
           selectItem={function (arg0: any): void {
             throw new Error("Function not implemented.")
           }}
-        />
+        >
+          what's oging on there
+        </Dropdown>
         <button onClick={() => saveImage()}>Download as PNG</button>
+        {flowerPropsValues[0].colors && (
+          <ColorPicker
+            propIdx={0}
+            colors={flowerPropsValues[0].colors}
+            colorKey={"mouth"}
+          />
+        )}
+        {/* <FlowerColorPicker colors={flowerPropsValues[0].colors} /> */}
+        {flowerPropsValues[0].colors?.mouth}
       </Menu>
       <CanvasContainer>
         <Canvas id="canvas" width={900} height={600}>
