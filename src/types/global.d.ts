@@ -28,7 +28,7 @@ declare global {
   interface FlowerProps {
     idx: number
     hidden: boolean
-    colors?: FlowerColors
+    colors: FlowerColors
     randomness?: number
     scale?: number
     rotate?: number

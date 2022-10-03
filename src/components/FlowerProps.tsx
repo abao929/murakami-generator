@@ -1,9 +1,3 @@
-const flowerPropsValues: FlowerProps[] = [...Array(100)].map(
-  (_, idx): FlowerProps => {
-    return { idx: idx, hidden: true }
-  }
-)
-
 const defaultColors: FlowerColors = {
   petal0: "#EE32A2",
   petal1: "#F0413A",
@@ -22,4 +16,4 @@ const defaultColors: FlowerColors = {
   face: "#F5F015",
   mouth: "#ED1D25",
 }
-export { flowerPropsValues, defaultColors }
+export { defaultColors }
